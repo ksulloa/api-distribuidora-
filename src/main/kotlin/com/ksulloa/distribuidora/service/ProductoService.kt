@@ -35,6 +35,8 @@ class ProductoService {
         try {
             val response = productoRepository.findById(producto.id)
                 ?: throw Exception("El ID ${producto.id}  no existe")
+            val response1 = productoRepository.findById(producto.dueñoId)
+                ?: throw Exception("El ID ${producto.dueñoId}  no existe")
 
        if (producto.cantidad!! > "100" && producto.cantidad!! < "500" ){
            throw Exception("Los productos se deben llevar al por mayor de 100 a 500")

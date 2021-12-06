@@ -20,6 +20,8 @@ class DueñoService {
 
     fun save(dueño: Dueño): Dueño {
       try {
+          val response = dueñoRepository.findById(dueño.distribuidoraId)
+              ?: throw Exception("El ID ${dueño.distribuidoraId}  no existe")
           if (dueño.nombre.equals("") || dueño.apellido.equals("") || dueño.cedula.equals("") || dueño.telefono.equals("")) {
             throw Exception("Llenar los campos requeridos")
         } else {
@@ -35,6 +37,8 @@ class DueñoService {
         try {
             val response = dueñoRepository.findById(dueño.id)
                 ?: throw Exception("El ID ${dueño.id}  no existe")
+            val response1 = dueñoRepository.findById(dueño.distribuidoraId)
+                ?: throw Exception("El ID ${dueño.distribuidoraId}  no existe")
 
             if (dueño.nombre.equals("") || dueño.apellido.equals("") || dueño.cedula.equals("") || dueño.telefono.equals("")) {
                 throw Exception("Llenar los campos requeridos")
