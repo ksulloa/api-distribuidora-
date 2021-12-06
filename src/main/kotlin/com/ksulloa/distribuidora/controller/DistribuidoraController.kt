@@ -1,8 +1,9 @@
 package com.ksulloa.distribuidora.controller
 
 import com.ksulloa.distribuidora.model.Distribuidora
-import com.ksulloa.distribuidora.service0.DistribuidoraService
+import com.ksulloa.distribuidora.service.DistribuidoraService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -36,4 +37,5 @@ class DistribuidoraController {
     fun delete (@PathVariable("id") id: Long):Boolean {
         return distribuidoraService.delete(id)
     }
+
 }

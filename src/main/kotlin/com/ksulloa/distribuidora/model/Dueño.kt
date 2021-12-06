@@ -13,6 +13,8 @@ class Dueño {
 
     var nombre: String? = null
     var apellido: String? = null
+    var cedula: String? = null
+    var telefono: String? = null
     @Column(name = "distribuidora_id")
     var distribuidoraId: Long? = null
 

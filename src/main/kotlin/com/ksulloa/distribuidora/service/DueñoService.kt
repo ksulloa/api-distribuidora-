@@ -3,7 +3,9 @@ package com.ksulloa.distribuidora.service
 import com.ksulloa.distribuidora.model.Dueño
 import com.ksulloa.distribuidora.repository.DueñoRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class DueñoService {
@@ -17,22 +19,54 @@ class DueñoService {
     }
 
     fun save(dueño: Dueño): Dueño {
-        return dueñoRepository.save(dueño)
+      try {
+          if (dueño.nombre.equals("") || dueño.apellido.equals("") || dueño.cedula.equals("") || dueño.telefono.equals("")) {
+            throw Exception("Llenar los campos requeridos")
+        } else {
+            return dueñoRepository.save(dueño)
+        }
     }
-
+    catch(ex: Exception) {
+        throw ResponseStatusException(
+            HttpStatus.NOT_FOUND, ex.message, ex)
+    }
+        }
     fun update(dueño: Dueño):Dueño {
-        return dueñoRepository.save(dueño)
+        try {
+            val response = dueñoRepository.findById(dueño.id)
+                ?: throw Exception("El ID ${dueño.id}  no existe")
 
+            if (dueño.nombre.equals("") || dueño.apellido.equals("") || dueño.cedula.equals("") || dueño.telefono.equals("")) {
+                throw Exception("Llenar los campos requeridos")
+            } else {
+                return dueñoRepository.save(dueño)
+            }
+        }
+        catch (ex: Exception){
+            throw ResponseStatusException(
+                HttpStatus.NOT_FOUND, "ID no encontrado", ex)
+        }
     }
 
-     fun updateNombre (dueño: Dueño):Dueño {
-         val response = dueñoRepository.findById(dueño.id)
-             ?: throw Exception()
-         response.apply {
-             this.nombre=dueño.nombre
+     fun updateTelefono (dueño: Dueño):Dueño {
+         try {
+             if (dueño.telefono.equals("")) {
+                 throw Exception("El campo se encuentra vacío")
+             }
+             val response = dueñoRepository.findById(dueño.id)
+                 ?: throw Exception("El ID ${dueño.id}  no existe")
+             response.apply {
+                 this.telefono = dueño.telefono
+             }
+             return dueñoRepository.save(response)
          }
-         return dueñoRepository.save(response)
+         catch (ex: Exception) {
+             throw ResponseStatusException(
+                 HttpStatus.NOT_FOUND, ex.message, ex)
+         }
      }
+
+
      fun delete (id:Long): Boolean{
          dueñoRepository.deleteById(id)
          return true

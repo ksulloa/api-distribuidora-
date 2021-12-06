@@ -29,8 +29,8 @@ class DueñoController {
 
     }
     @PatchMapping
-    fun updateNombre(@RequestBody dueño: Dueño): Dueño {
-        return  dueñoService.updateNombre(dueño)
+    fun updateTelefono(@RequestBody dueño: Dueño): Dueño {
+        return  dueñoService.updateTelefono(dueño)
 
     }
     @DeleteMapping("/delete/{id}")

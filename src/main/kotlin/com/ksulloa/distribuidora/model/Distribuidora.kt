@@ -13,4 +13,6 @@ class Distribuidora {
 
     var nombre: String? = null
     var direccion: String? = null
+    var categoria: String? = null
+
 }

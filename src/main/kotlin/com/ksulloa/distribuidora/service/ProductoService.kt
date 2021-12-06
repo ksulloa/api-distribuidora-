@@ -3,7 +3,9 @@ package com.ksulloa.distribuidora.service
 import com.ksulloa.distribuidora.model.Producto
 import com.ksulloa.distribuidora.repository.ProductoRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class ProductoService {
@@ -12,27 +14,62 @@ class ProductoService {
 
 
     fun list(): List<Producto> {
-
         return productoRepository.findAll()
     }
 
     fun save(producto: Producto): Producto {
-        return productoRepository.save(producto)
+        try {
+            if (producto.nombre.equals("") || producto.cantidad.equals("") || producto.precio.equals("") || producto.categoria.equals("")) {
+                throw Exception("Llenar los campos requeridos")
+            } else {
+                return productoRepository.save(producto)
+            }
+        }
+        catch(ex: Exception) {
+            throw ResponseStatusException(
+                HttpStatus.NOT_FOUND, ex.message, ex)
+        }
     }
 
     fun update(producto: Producto): Producto {
-        return productoRepository.save(producto)
+        try {
+            val response = productoRepository.findById(producto.id)
+                ?: throw Exception("El ID ${producto.id}  no existe")
 
+       if (producto.cantidad!! > "100" && producto.cantidad!! < "500" ){
+           throw Exception("Los productos se deben llevar al por mayor de 100 a 500")
+       }
+        if (producto.nombre.equals("") || producto.cantidad.equals("") || producto.precio.equals("") || producto.categoria.equals("") ){
+            throw Exception("Llenar los campos requeridos")
+        }
+        else{
+            return productoRepository.save(producto)
+        }
+        }
+        catch (ex: Exception){
+            throw ResponseStatusException(
+                HttpStatus.NOT_FOUND, "ID no encontrado", ex)
+        }
     }
 
     fun updateCantidad (producto: Producto):Producto {
-        val response = productoRepository.findById(producto.id)
-            ?: throw Exception()
-        response.apply {
-            this.cantidad=producto.cantidad
+        try {
+            if (producto.cantidad.equals("")){
+                throw Exception("El campo se encuentra vacío")
+            }
+            val response = productoRepository.findById(producto.id)
+                ?: throw Exception("El ID ${producto.id}  no existe")
+            response.apply {
+                this.cantidad = producto.cantidad
+            }
+            return productoRepository.save(response)
         }
-        return productoRepository.save(response)
+        catch (ex: Exception) {
+            throw ResponseStatusException(
+                HttpStatus.NOT_FOUND, ex.message, ex)
+        }
     }
+
     fun delete (id:Long): Boolean{
         productoRepository.deleteById(id)
         return true
