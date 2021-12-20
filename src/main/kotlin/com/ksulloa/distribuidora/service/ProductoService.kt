@@ -1,6 +1,7 @@
 package com.ksulloa.distribuidora.service
 
 import com.ksulloa.distribuidora.model.Producto
+import com.ksulloa.distribuidora.repository.DueñoRepository
 import com.ksulloa.distribuidora.repository.ProductoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -12,6 +13,8 @@ class ProductoService {
     @Autowired
     lateinit var productoRepository: ProductoRepository
 
+    @Autowired
+    lateinit var dueñoRepository: DueñoRepository
 
     fun list(): List<Producto> {
         return productoRepository.findAll()
@@ -19,6 +22,8 @@ class ProductoService {
 
     fun save(producto: Producto): Producto {
         try {
+            val response1 = dueñoRepository.findById(producto.dueñoId)
+                ?: throw Exception("El ID ${producto.dueñoId}  no existe")
             if (producto.nombre.equals("") || producto.cantidad.equals("") || producto.precio.equals("") || producto.categoria.equals("")) {
                 throw Exception("Llenar los campos requeridos")
             } else {
@@ -35,7 +40,7 @@ class ProductoService {
         try {
             val response = productoRepository.findById(producto.id)
                 ?: throw Exception("El ID ${producto.id}  no existe")
-            val response1 = productoRepository.findById(producto.dueñoId)
+            val response1 = dueñoRepository.findById(producto.dueñoId)
                 ?: throw Exception("El ID ${producto.dueñoId}  no existe")
 
        if (producto.cantidad!! > "100" && producto.cantidad!! < "500" ){
@@ -56,6 +61,8 @@ class ProductoService {
 
     fun updateCantidad (producto: Producto):Producto {
         try {
+            producto.cantidad?.trim()?.isEmpty()
+                ?: throw Exception("El ID ${producto.id}  no existe")
             if (producto.cantidad.equals("")){
                 throw Exception("El campo se encuentra vacío")
             }

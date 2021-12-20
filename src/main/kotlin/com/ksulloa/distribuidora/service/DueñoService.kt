@@ -1,6 +1,7 @@
 package com.ksulloa.distribuidora.service
 
 import com.ksulloa.distribuidora.model.Dueño
+import com.ksulloa.distribuidora.repository.DistribuidoraRepository
 import com.ksulloa.distribuidora.repository.DueñoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -12,6 +13,8 @@ class DueñoService {
     @Autowired
     lateinit var dueñoRepository: DueñoRepository
 
+    @Autowired
+    lateinit var distribuidoraRepository: DistribuidoraRepository
 
     fun list(): List<Dueño> {
 
@@ -20,8 +23,10 @@ class DueñoService {
 
     fun save(dueño: Dueño): Dueño {
       try {
-          val response = dueñoRepository.findById(dueño.distribuidoraId)
+          val response1 = distribuidoraRepository.findById(dueño.distribuidoraId)
               ?: throw Exception("El ID ${dueño.distribuidoraId}  no existe")
+
+
           if (dueño.nombre.equals("") || dueño.apellido.equals("") || dueño.cedula.equals("") || dueño.telefono.equals("")) {
             throw Exception("Llenar los campos requeridos")
         } else {
@@ -37,7 +42,7 @@ class DueñoService {
         try {
             val response = dueñoRepository.findById(dueño.id)
                 ?: throw Exception("El ID ${dueño.id}  no existe")
-            val response1 = dueñoRepository.findById(dueño.distribuidoraId)
+            val response1 = distribuidoraRepository.findById(dueño.distribuidoraId)
                 ?: throw Exception("El ID ${dueño.distribuidoraId}  no existe")
 
             if (dueño.nombre.equals("") || dueño.apellido.equals("") || dueño.cedula.equals("") || dueño.telefono.equals("")) {
@@ -54,9 +59,10 @@ class DueñoService {
 
      fun updateTelefono (dueño: Dueño):Dueño {
          try {
-             if (dueño.telefono.equals("")) {
-                 throw Exception("El campo se encuentra vacío")
-             }
+             dueño.telefono?.takeIf {it.trim().isNotEmpty()}
+                 ?: throw Exception("El campo telefono esta vacio")
+
+
              val response = dueñoRepository.findById(dueño.id)
                  ?: throw Exception("El ID ${dueño.id}  no existe")
              response.apply {

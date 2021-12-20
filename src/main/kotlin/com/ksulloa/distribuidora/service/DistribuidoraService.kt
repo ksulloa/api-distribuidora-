@@ -52,8 +52,9 @@ class DistribuidoraService {
 
      fun updateDireccion (distribuidora: Distribuidora):Distribuidora {
          try {
-             if (distribuidora.direccion.equals("")){
-                 throw Exception("El campo se encuentra vacío")}
+             distribuidora.direccion?.trim()?.isEmpty()
+                 ?: throw Exception("El campo se encuentra vacío")
+
              val response = distribuidoraRepository.findById(distribuidora.id)
                  ?: throw Exception("El ID ${distribuidora.id}  no existe")
              response.apply {
