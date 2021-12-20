@@ -3,9 +3,9 @@ package com.ksulloa.distribuidora.model
 import javax.persistence.*
 
 @Entity
-@Table(name = "dueño")
+@Table(name = "dueno")
 
-class Dueño {
+class Dueno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(updatable = false)
