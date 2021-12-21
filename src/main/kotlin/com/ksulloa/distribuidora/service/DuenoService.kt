@@ -23,9 +23,6 @@ class DuenoService {
 
     fun save(dueno: Dueno): Dueno {
       try {
-          val response1 = distribuidoraRepository.findById(dueno.distribuidoraId)
-              ?: throw Exception("El ID ${dueno.distribuidoraId}  no existe")
-
 
           if (dueno.nombre.equals("") || dueno.apellido.equals("") || dueno.cedula.equals("") || dueno.telefono.equals("")) {
             throw Exception("Llenar los campos requeridos")
@@ -42,8 +39,7 @@ class DuenoService {
         try {
             val response = duenoRepository.findById(dueno.id)
                 ?: throw Exception("El ID ${dueno.id}  no existe")
-            val response1 = distribuidoraRepository.findById(dueno.distribuidoraId)
-                ?: throw Exception("El ID ${dueno.distribuidoraId}  no existe")
+
 
             if (dueno.nombre.equals("") || dueno.apellido.equals("") || dueno.cedula.equals("") || dueno.telefono.equals("")) {
                 throw Exception("Llenar los campos requeridos")
@@ -51,9 +47,9 @@ class DuenoService {
                 return duenoRepository.save(dueno)
             }
         }
-        catch (ex: Exception){
+        catch(ex: Exception){
             throw ResponseStatusException(
-                HttpStatus.NOT_FOUND, "ID no encontrado", ex)
+                HttpStatus.NOT_FOUND, ex.message, ex)
         }
     }
 

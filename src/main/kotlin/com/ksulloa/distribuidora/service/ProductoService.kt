@@ -14,7 +14,7 @@ class ProductoService {
     lateinit var productoRepository: ProductoRepository
 
     @Autowired
-    lateinit var duenoRepository: DuenoRepository
+    lateinit var distribuidoraRepository: DuenoRepository
 
     fun list(): List<Producto> {
         return productoRepository.findAll()
@@ -22,8 +22,8 @@ class ProductoService {
 
     fun save(producto: Producto): Producto {
         try {
-            val response1 = duenoRepository.findById(producto.dueñoId)
-                ?: throw Exception("El ID ${producto.dueñoId}  no existe")
+            val response1 = distribuidoraRepository.findById(producto.distribuidoraId)
+                ?: throw Exception("El ID ${producto.distribuidoraId}  no existe")
             if (producto.nombre.equals("") || producto.cantidad.equals("") || producto.precio.equals("") || producto.categoria.equals("")) {
                 throw Exception("Llenar los campos requeridos")
             } else {
@@ -38,10 +38,12 @@ class ProductoService {
 
     fun update(producto: Producto): Producto {
         try {
+            val response1 = distribuidoraRepository.findById(producto.distribuidoraId)
+                ?: throw Exception("El ID ${producto.distribuidoraId}  no existe")
+
             val response = productoRepository.findById(producto.id)
                 ?: throw Exception("El ID ${producto.id}  no existe")
-            val response1 = duenoRepository.findById(producto.dueñoId)
-                ?: throw Exception("El ID ${producto.dueñoId}  no existe")
+
 
        if (producto.cantidad!! > "100" && producto.cantidad!! < "500" ){
            throw Exception("Los productos se deben llevar al por mayor de 100 a 500")
@@ -53,19 +55,18 @@ class ProductoService {
             return productoRepository.save(producto)
         }
         }
-        catch (ex: Exception){
+        catch(ex: Exception){
             throw ResponseStatusException(
-                HttpStatus.NOT_FOUND, "ID no encontrado", ex)
+                HttpStatus.NOT_FOUND, ex.message, ex)
         }
     }
 
     fun updateCantidad (producto: Producto):Producto {
         try {
             producto.cantidad?.trim()?.isEmpty()
-                ?: throw Exception("El ID ${producto.id}  no existe")
-            if (producto.cantidad.equals("")){
-                throw Exception("El campo se encuentra vacío")
-            }
+                ?: throw Exception("El campo se encuentra vacío")
+
+
             val response = productoRepository.findById(producto.id)
                 ?: throw Exception("El ID ${producto.id}  no existe")
             response.apply {

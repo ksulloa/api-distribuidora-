@@ -15,7 +15,7 @@ class Producto {
     var cantidad: String? = null
     var precio: String? = null
     var categoria: String? = null
-    @Column(name = "dueño_id")
-    var dueñoId: Long? = null
+    @Column(name = "distribuidora_id")
+    var distribuidoraId: Long? = null
 
 }

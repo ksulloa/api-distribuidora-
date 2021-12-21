@@ -14,5 +14,7 @@ class Distribuidora {
     var nombre: String? = null
     var direccion: String? = null
     var categoria: String? = null
+    @Column(name = "dueno_id")
+    var duenoId: Long? = null
 
 }

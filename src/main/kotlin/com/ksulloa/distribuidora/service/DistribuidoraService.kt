@@ -2,6 +2,7 @@ package com.ksulloa.distribuidora.service
 
 import com.ksulloa.distribuidora.model.Distribuidora
 import com.ksulloa.distribuidora.repository.DistribuidoraRepository
+import com.ksulloa.distribuidora.repository.DuenoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -11,6 +12,9 @@ import org.springframework.web.server.ResponseStatusException
 class DistribuidoraService {
     @Autowired
     lateinit var distribuidoraRepository: DistribuidoraRepository
+
+    @Autowired
+    lateinit var duenoRepository: DuenoRepository
 
     fun list(): List<Distribuidora> {
 
@@ -35,7 +39,11 @@ class DistribuidoraService {
     fun update(distribuidora: Distribuidora): Distribuidora {
 
         try {
-            val response = distribuidoraRepository.findById(distribuidora.id)
+            val response = duenoRepository.findById(distribuidora.duenoId)
+                ?: throw Exception("El ID ${distribuidora.duenoId}  no existe")
+
+
+            val response1 = distribuidoraRepository.findById(distribuidora.id)
                 ?: throw Exception("El ID ${distribuidora.id}  no existe")
 
             if (distribuidora.nombre.equals("") || distribuidora.direccion.equals("") || distribuidora.categoria.equals("")) {
