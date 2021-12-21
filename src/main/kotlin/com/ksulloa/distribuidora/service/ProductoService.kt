@@ -22,7 +22,8 @@ class ProductoService {
 
     fun save(producto: Producto): Producto {
         try {
-            val response1 = distribuidoraRepository.findById(producto.distribuidoraId)
+
+            val response = distribuidoraRepository.findById(producto.distribuidoraId)
                 ?: throw Exception("El ID ${producto.distribuidoraId}  no existe")
             if (producto.nombre.equals("") || producto.cantidad.equals("") || producto.precio.equals("") || producto.categoria.equals("")) {
                 throw Exception("Llenar los campos requeridos")
