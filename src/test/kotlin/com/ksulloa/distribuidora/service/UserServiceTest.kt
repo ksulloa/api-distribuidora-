@@ -42,7 +42,7 @@ class UserServiceTest {
     }
     @Test
     fun validaCedula(){
-        val response = userService.subtactFromNextTen(10)
+        val response = userService.validaCedula("0105028945")
         Assertions.assertEquals(10,response)
     }
 }
