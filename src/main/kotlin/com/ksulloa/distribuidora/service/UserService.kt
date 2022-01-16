@@ -153,9 +153,9 @@ class UserService {
         }
         val par = (numero2.toInt() + numero4.toInt() + numero6.toInt() + numero8.toInt())
 
-        val Impar = numero1.toInt() * 2
-        if (Impar > 9) {
-            Impar - 9
+        val ImparNumero1 = numero1.toInt() * 2
+        if (ImparNumero1 > 9) {
+            ImparNumero1 - 9
         }
         var ImparNumero3 = numero3.toInt() * 2
         if (ImparNumero3 > 9) {
@@ -174,7 +174,7 @@ class UserService {
             ImparNumero9 -= 9
         }
 
-        val impares = Impar + ImparNumero3 + ImparNumero5 +ImparNumero7 + ImparNumero9
+        val impares = ImparNumero1 + ImparNumero3 + ImparNumero5 +ImparNumero7 + ImparNumero9
         val sumTotal = (par + impares)
 
         val operation = (sumTotal/10) + 1
