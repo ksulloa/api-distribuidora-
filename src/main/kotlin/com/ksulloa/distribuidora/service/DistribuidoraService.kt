@@ -23,18 +23,25 @@ class DistribuidoraService {
 
     fun save(distribuidora: Distribuidora): Distribuidora {
         try {
-            if (distribuidora.nombre.equals("") || distribuidora.direccion.equals("") || distribuidora.categoria.equals("")) {
-                throw Exception("Llenar los campos requeridos")
-            } else {
-                return distribuidoraRepository.save(distribuidora)
-            }
-        }
-            catch(ex: Exception) {
-                throw ResponseStatusException(
-                    HttpStatus.NOT_FOUND, ex.message, ex)
+            distribuidora.nombre?.takeIf { it.trim().isNotEmpty() }
+                ?: throw Exception("El campo nombre esta vacio")
 
-            }
+            distribuidora.direccion?.takeIf { it.trim().isNotEmpty() }
+                ?: throw Exception("El campo direccion esta vacio")
+
+
+            distribuidora.categoria?.takeIf { it.trim().isNotEmpty() }
+                ?: throw Exception("El campo categoria esta vacio")
+
+            return distribuidoraRepository.save(distribuidora)
+
+        } catch (ex: Exception) {
+            throw ResponseStatusException(
+                HttpStatus.NOT_FOUND, ex.message, ex
+            )
+
         }
+    }
 
     fun update(distribuidora: Distribuidora): Distribuidora {
 
@@ -46,41 +53,48 @@ class DistribuidoraService {
             val response1 = distribuidoraRepository.findById(distribuidora.id)
                 ?: throw Exception("El ID ${distribuidora.id}  no existe")
 
-            if (distribuidora.nombre.equals("") || distribuidora.direccion.equals("") || distribuidora.categoria.equals("")) {
-                throw Exception("Llenar los campos requeridos")
-            } else {
-                return distribuidoraRepository.save(distribuidora)
-            }
-        }
-        catch (ex: Exception){
+            distribuidora.nombre?.takeIf { it.trim().isNotEmpty() }
+                ?: throw Exception("El campo nombre esta vacio")
+
+            distribuidora.direccion?.takeIf { it.trim().isNotEmpty() }
+                ?: throw Exception("El campo direccion esta vacio")
+
+
+            distribuidora.categoria?.takeIf { it.trim().isNotEmpty() }
+                ?: throw Exception("El campo categoria esta vacio")
+
+            return distribuidoraRepository.save(distribuidora)
+
+        } catch (ex: Exception) {
             throw ResponseStatusException(
-                HttpStatus.NOT_FOUND, "ID no encontrado", ex)
+                HttpStatus.NOT_FOUND, "ID no encontrado", ex
+            )
         }
     }
 
-     fun updateDireccion (distribuidora: Distribuidora):Distribuidora {
-         try {
-             distribuidora.direccion?.trim()?.isEmpty()
-                 ?: throw Exception("El campo se encuentra vacío")
+    fun updateDireccion(distribuidora: Distribuidora): Distribuidora {
+        try {
+            distribuidora.direccion?.trim()?.isEmpty()
+                ?: throw Exception("El campo se encuentra vacío")
 
-             val response = distribuidoraRepository.findById(distribuidora.id)
-                 ?: throw Exception("El ID ${distribuidora.id}  no existe")
-             response.apply {
-                 this.direccion = distribuidora.direccion
-             }
-             return distribuidoraRepository.save(response)
+            val response = distribuidoraRepository.findById(distribuidora.id)
+                ?: throw Exception("El ID ${distribuidora.id}  no existe")
+            response.apply {
+                this.direccion = distribuidora.direccion
+            }
+            return distribuidoraRepository.save(response)
 
-         }
-         catch(ex: Exception){
-             throw ResponseStatusException(
-                 HttpStatus.NOT_FOUND, ex.message, ex)
-     }
-     }
+        } catch (ex: Exception) {
+            throw ResponseStatusException(
+                HttpStatus.NOT_FOUND, ex.message, ex
+            )
+        }
+    }
 
-
-     fun delete (id:Long): Boolean{
-         distribuidoraRepository.deleteById(id)
-         return true
-     }
+    fun delete(id: Long): Boolean {
+        distribuidoraRepository.deleteById(id)
+        return true
+    }
 
 }
+

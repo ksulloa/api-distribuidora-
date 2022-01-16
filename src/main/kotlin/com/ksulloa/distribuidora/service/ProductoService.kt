@@ -25,11 +25,22 @@ class ProductoService {
 
             val response = distribuidoraRepository.findById(producto.distribuidoraId)
                 ?: throw Exception("El ID ${producto.distribuidoraId}  no existe")
-            if (producto.nombre.equals("") || producto.cantidad.equals("") || producto.precio.equals("") || producto.categoria.equals("")) {
-                throw Exception("Llenar los campos requeridos")
-            } else {
+
+            producto.nombre?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo nombre esta vacio")
+
+            producto.cantidad?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo cantidad esta vacio")
+
+            producto.precio?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo precio esta vacio")
+
+            producto.categoria?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo categoria esta vacio")
+
+
                 return productoRepository.save(producto)
-            }
+
         }
         catch(ex: Exception) {
             throw ResponseStatusException(
@@ -45,16 +56,24 @@ class ProductoService {
             val response = productoRepository.findById(producto.id)
                 ?: throw Exception("El ID ${producto.id}  no existe")
 
+            producto.nombre?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo nombre esta vacio")
+
+            producto.cantidad?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo cantidad esta vacio")
+
+            producto.precio?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo precio esta vacio")
+
+            producto.categoria?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo categoria esta vacio")
 
        if (producto.cantidad!! > "100" && producto.cantidad!! < "500" ){
            throw Exception("Los productos se deben llevar al por mayor de 100 a 500")
        }
-        if (producto.nombre.equals("") || producto.cantidad.equals("") || producto.precio.equals("") || producto.categoria.equals("") ){
-            throw Exception("Llenar los campos requeridos")
-        }
-        else{
+
             return productoRepository.save(producto)
-        }
+
         }
         catch(ex: Exception){
             throw ResponseStatusException(

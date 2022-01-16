@@ -24,11 +24,21 @@ class DuenoService {
     fun save(dueno: Dueno): Dueno {
       try {
 
-          if (dueno.nombre.equals("") || dueno.apellido.equals("") || dueno.cedula.equals("") || dueno.telefono.equals("")) {
-            throw Exception("Llenar los campos requeridos")
-        } else {
+              dueno.nombre?.takeIf {it.trim().isNotEmpty()}
+                  ?: throw Exception("El campo nombre esta vacio")
+
+              dueno.apellido?.takeIf {it.trim().isNotEmpty()}
+                  ?: throw Exception("El campo apellido esta vacio")
+
+              dueno.cedula?.takeIf {it.trim().isNotEmpty()}
+                  ?: throw Exception("El campo cedula esta vacio")
+
+              dueno.telefono?.takeIf {it.trim().isNotEmpty()}
+                  ?: throw Exception("El campo telefono esta vacio")
+
+
             return duenoRepository.save(dueno)
-        }
+
     }
     catch(ex: Exception) {
         throw ResponseStatusException(
@@ -40,12 +50,21 @@ class DuenoService {
             val response = duenoRepository.findById(dueno.id)
                 ?: throw Exception("El ID ${dueno.id}  no existe")
 
+            dueno.nombre?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo nombre esta vacio")
 
-            if (dueno.nombre.equals("") || dueno.apellido.equals("") || dueno.cedula.equals("") || dueno.telefono.equals("")) {
-                throw Exception("Llenar los campos requeridos")
-            } else {
+            dueno.apellido?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo apellido esta vacio")
+
+            dueno.cedula?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo cedula esta vacio")
+
+            dueno.telefono?.takeIf {it.trim().isNotEmpty()}
+                ?: throw Exception("El campo telefono esta vacio")
+
+
                 return duenoRepository.save(dueno)
-            }
+
         }
         catch(ex: Exception){
             throw ResponseStatusException(
@@ -77,4 +96,17 @@ class DuenoService {
          duenoRepository.deleteById(id)
          return true
      }
+
+    fun verifyWord(cedula: String?, telefono: String?):Boolean{
+        if (cedula?.length!! ==10){
+            return false
+        }
+        if (telefono?.length!! ==10 || telefono?.length!! ==7 ){
+            return false
+        }
+        return true
+
+
+}
+
 }
