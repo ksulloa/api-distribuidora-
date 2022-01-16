@@ -157,24 +157,24 @@ class UserService {
         if (Impar > 9) {
             Impar - 9
         }
-        var ImparNumero1 = numero3.toInt() * 2
-        if (ImparNumero1 > 9) {
-            ImparNumero1 -= 9
-        }
-        var ImparNumero2 = numero5.toInt() * 2
-        if (ImparNumero2 > 9) {
-            ImparNumero2 -= 9
-        }
-        var ImparNumero3 = numero7.toInt() * 2
+        var ImparNumero3 = numero3.toInt() * 2
         if (ImparNumero3 > 9) {
             ImparNumero3 -= 9
         }
-        var ImparNumero4 = numero9.toInt() * 2
-        if (ImparNumero4 > 9) {
-            ImparNumero4 -= 9
+        var ImparNumero5 = numero5.toInt() * 2
+        if (ImparNumero5 > 9) {
+            ImparNumero5 -= 9
+        }
+        var ImparNumero7 = numero7.toInt() * 2
+        if (ImparNumero7 > 9) {
+            ImparNumero7 -= 9
+        }
+        var ImparNumero9 = numero9.toInt() * 2
+        if (ImparNumero9 > 9) {
+            ImparNumero9 -= 9
         }
 
-        val impares = Impar + ImparNumero1 + ImparNumero3 + ImparNumero4
+        val impares = Impar + ImparNumero3 + ImparNumero5 +ImparNumero7 + ImparNumero9
         val sumTotal = (par + impares)
 
         val operation = (sumTotal/10) + 1
