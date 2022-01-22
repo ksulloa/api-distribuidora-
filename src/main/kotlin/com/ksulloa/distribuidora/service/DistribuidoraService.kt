@@ -23,6 +23,9 @@ class DistribuidoraService {
 
     fun save(distribuidora: Distribuidora): Distribuidora {
         try {
+            val response = duenoRepository.findById(distribuidora.duenoId)
+                ?: throw Exception("El ID ${distribuidora.duenoId}  no existe")
+
             distribuidora.nombre?.takeIf { it.trim().isNotEmpty() }
                 ?: throw Exception("El campo nombre esta vacio")
 
@@ -32,6 +35,7 @@ class DistribuidoraService {
 
             distribuidora.categoria?.takeIf { it.trim().isNotEmpty() }
                 ?: throw Exception("El campo categoria esta vacio")
+
 
             return distribuidoraRepository.save(distribuidora)
 

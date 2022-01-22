@@ -1,6 +1,7 @@
 package com.ksulloa.distribuidora.service
 
 import com.ksulloa.distribuidora.model.Producto
+import com.ksulloa.distribuidora.repository.DistribuidoraRepository
 import com.ksulloa.distribuidora.repository.DuenoRepository
 import com.ksulloa.distribuidora.repository.ProductoRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +15,7 @@ class ProductoService {
     lateinit var productoRepository: ProductoRepository
 
     @Autowired
-    lateinit var distribuidoraRepository: DuenoRepository
+    lateinit var distribuidoraRepository: DistribuidoraRepository
 
     fun list(): List<Producto> {
         return productoRepository.findAll()
