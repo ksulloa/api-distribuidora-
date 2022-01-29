@@ -92,10 +92,18 @@ class DuenoService {
      }
 
 
-     fun delete (id:Long): Boolean{
-         duenoRepository.deleteById(id)
-         return true
-     }
+    fun delete (id:Long?): Boolean{
+
+        try {
+            duenoRepository.findById(id)
+                ?: throw Exception("El ID del dueño no existe")
+            duenoRepository.deleteById(id!!)
+            return true
+
+        }catch(ex: Exception){
+            throw Exception()
+        }
+    }
 
     fun verifyWord(cedula: String?, telefono: String?):Boolean{
         if (cedula?.length!! ==10){

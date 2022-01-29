@@ -95,10 +95,17 @@ class DistribuidoraService {
         }
     }
 
-    fun delete(id: Long): Boolean {
-        distribuidoraRepository.deleteById(id)
-        return true
-    }
+    fun delete (id:Long?): Boolean{
 
+        try {
+            distribuidoraRepository.findById(id)
+                ?: throw Exception("El ID de la distribuidora no existe")
+            distribuidoraRepository.deleteById(id!!)
+            return true
+
+        }catch(ex: Exception){
+            throw Exception()
+        }
+    }
 }
 

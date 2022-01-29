@@ -101,8 +101,16 @@ class ProductoService {
         }
     }
 
-    fun delete (id:Long): Boolean{
-        productoRepository.deleteById(id)
-        return true
+    fun delete (id:Long?): Boolean{
+
+        try {
+            productoRepository.findById(id)
+                ?: throw Exception("El ID del producto no existe")
+            productoRepository.deleteById(id!!)
+            return true
+
+        }catch(ex: Exception){
+            throw Exception()
+        }
     }
 }

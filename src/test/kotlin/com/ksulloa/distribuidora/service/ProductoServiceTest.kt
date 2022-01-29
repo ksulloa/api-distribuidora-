@@ -2,6 +2,7 @@ package com.ksulloa.distribuidora.service
 
 import com.google.gson.Gson
 import com.ksulloa.distribuidora.model.Distribuidora
+import com.ksulloa.distribuidora.model.Dueno
 import com.ksulloa.distribuidora.model.Producto
 import com.ksulloa.distribuidora.repository.DistribuidoraRepository
 import com.ksulloa.distribuidora.repository.ProductoRepository
@@ -114,7 +115,81 @@ class ProductoServiceTest {
             productoService.save(productoMock)
         }
     }
+    @Test
+    fun updateProductoIsIdCorrect() {
+        Mockito.`when`(productoRepository.findById(returnObject.id)).thenReturn(returnObject)
+        Mockito.`when`(distribuidoraRepository.findById(productoMock.distribuidoraId)).thenReturn(distribuidoraMock)
+        Mockito.`when`(productoRepository.save(Mockito.any(Producto::class.java))).thenReturn(returnObject)
+        val response = productoService.update(newObject)
+        Assertions.assertEquals(response.id, newObject.id)
+        Assertions.assertEquals(response.nombre, newObject.nombre)
+        Assertions.assertEquals(response.cantidad, newObject.cantidad)
+        Assertions.assertEquals(response.precio, newObject.precio)
+        Assertions.assertEquals(response.categoria, newObject.categoria)
+        Assertions.assertEquals(response.distribuidoraId, newObject.distribuidoraId)
 
+    }
+    @Test
+    fun updateProductoIsIdFailed() {
+        Assertions.assertThrows(Exception::class.java) {
+            Mockito.`when`(productoRepository.findById(returnObject.id)).thenReturn(returnObject)
+            Mockito.`when`(productoRepository.save(Mockito.any(Producto::class.java))).thenReturn(returnObject)
+            val response = productoService.update(newObject)
+            Assertions.assertEquals(response.id, newObject.id)
+
+        }
+    }
+    @Test
+    fun updateProductoFailedNombre() {
+        Assertions.assertThrows(Exception::class.java) {
+            productoMock.apply { nombre = "    " }
+            Mockito.`when`(productoRepository.save(Mockito.any(Producto::class.java))).thenReturn(productoMock)
+            productoService.update(productoMock)
+        }
+    }
+
+    @Test
+    fun updateProductoFailedCantidad() {
+        Assertions.assertThrows(Exception::class.java) {
+            productoMock.apply { cantidad = "    " }
+            Mockito.`when`(productoRepository.save(Mockito.any(Producto::class.java))).thenReturn(productoMock)
+            productoService.update(productoMock)
+        }
+    }
+
+    @Test
+    fun updateProductoFailedPrecio() {
+        Assertions.assertThrows(Exception::class.java) {
+            productoMock.apply { precio = "    " }
+            Mockito.`when`(productoRepository.save(Mockito.any(Producto::class.java))).thenReturn(productoMock)
+            productoService.update(productoMock)
+        }
+    }
+
+    @Test
+    fun updateProductoFailedCategoria() {
+        Assertions.assertThrows(Exception::class.java) {
+            productoMock.apply { categoria = "    " }
+            Mockito.`when`(productoRepository.save(Mockito.any(Producto::class.java))).thenReturn(productoMock)
+            productoService.update(productoMock)
+        }
+    }
+    @Test
+    fun delete() {
+        Mockito.`when`(productoRepository.findById(newObject.id)).thenReturn(returnObject)
+        Mockito.`when`(productoRepository.save(Mockito.any(Producto::class.java))).thenReturn(returnObject)
+        val response = productoService.delete(newObject.id)
+        Assertions.assertEquals(response, true)
+    }
+    @Test
+    fun deleteFailed() {
+        Assertions.assertThrows(Exception::class.java) {
+        Mockito.`when`(productoRepository.findById(newObject.id)).thenReturn(null)
+        Mockito.`when`(productoRepository.save(Mockito.any(Producto::class.java))).thenReturn(returnObject)
+        val response = productoService.delete(newObject.id)
+        Assertions.assertEquals(response, true)
+    }
+    }
 }
 
 
