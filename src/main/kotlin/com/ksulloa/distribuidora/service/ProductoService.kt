@@ -17,6 +17,9 @@ class ProductoService {
     @Autowired
     lateinit var distribuidoraRepository: DistribuidoraRepository
 
+    val listaCategoria= listOf<String>("alimentos","cosmeticos","repuestos")
+
+
     fun list(): List<Producto> {
         return productoRepository.findAll()
     }
@@ -69,9 +72,12 @@ class ProductoService {
             producto.categoria?.takeIf {it.trim().isNotEmpty()}
                 ?: throw Exception("El campo categoria esta vacio")
 
-       if (producto.cantidad!! > "100" && producto.cantidad!! < "500" ){
+       if (producto.cantidad!! > "100" && producto.cantidad!! < "500" ) {
            throw Exception("Los productos se deben llevar al por mayor de 100 a 500")
        }
+           if (!validarProducto(Producto.categoria!!)) {
+               throw Exception("El campo de categoria no pertenece a la lista")
+           }
 
             return productoRepository.save(producto)
 
@@ -80,6 +86,7 @@ class ProductoService {
             throw ResponseStatusException(
                 HttpStatus.NOT_FOUND, ex.message, ex)
         }
+
     }
 
     fun updateCantidad (producto: Producto):Producto {
@@ -100,6 +107,16 @@ class ProductoService {
                 HttpStatus.NOT_FOUND, ex.message, ex)
         }
     }
+        fun validarProducto(categoria: String):Boolean{
+          for (i in listaCategoria){
+              if (categoria == i){
+                  return true
+              }
+          }
+        return false
+
+        }
+
 
     fun delete (id:Long?): Boolean{
 
