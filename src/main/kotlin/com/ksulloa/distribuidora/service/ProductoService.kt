@@ -75,7 +75,7 @@ class ProductoService {
        if (producto.cantidad!! > "100" && producto.cantidad!! < "500" ) {
            throw Exception("Los productos se deben llevar al por mayor de 100 a 500")
        }
-           if (!validarProducto(Producto.categoria!!)) {
+           if (!validarProducto(producto.categoria!!)) {
                throw Exception("El campo de categoria no pertenece a la lista")
            }
 

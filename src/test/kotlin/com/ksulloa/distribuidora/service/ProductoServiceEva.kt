@@ -122,11 +122,11 @@ class ProductoServiceEva {
     @Test
     fun updateProductoFailedListCategoria() {
         Assertions.assertThrows(Exception::class.java) {
-            productoMock.apply { categoria=" " }
-        }
-        Mockito.`when`(productoRepository.findById(returnObject.id)).thenReturn(returnObject)
-        Mockito.`when`(productoRepository.save(Mockito.any(Producto::class.java))).thenReturn(returnObject)
-        productoService.update(productoMock)
-    }
+            productoMock.apply { categoria = " " }
 
+            Mockito.`when`(productoRepository.findById(returnObject.id)).thenReturn(returnObject)
+            Mockito.`when`(productoRepository.save(Mockito.any(Producto::class.java))).thenReturn(returnObject)
+            productoService.update(productoMock)
+        }
+    }
 }
